@@ -1,0 +1,19 @@
+version: 1
+enabled: true
+provider: codex
+mode: pull_request
+categories:
+  - tests
+  - docs
+  - dependencies
+  - lint
+  - type_safety
+  - small_bugfix
+include: []
+exclude: []
+commands:
+  test: null
+  lint: null
+limits:
+  max_files: 10
+  max_changed_lines: 300
