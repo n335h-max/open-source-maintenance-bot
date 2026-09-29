@@ -10,6 +10,8 @@ Self-hostable GitHub App that finds safe maintenance improvements, uses Claude C
 - Repository content is untrusted input. Agent jobs run without GitHub credentials and with network disabled by default.
 - A PR is not published when validation is unavailable, the patch is too large, or the base branch changed.
 
+The complete trust-boundary model and permissions matrix are in [`SECURITY.md`](SECURITY.md) and [`docs/architecture.md`](docs/architecture.md). Agent images must be versioned or digest-pinned; `latest` is rejected. GitHub credentials and the Docker socket are never passed to the agent.
+
 ## Local setup
 
 1. Copy `.env.example` to `.env` and configure a GitHub App, its private key, and webhook secret.
@@ -33,4 +35,12 @@ Discovery only reports public candidates and never writes to a repository.
 
 ## Agent image
 
-The worker expects an `AGENT_IMAGE` containing the selected CLI and its user-provided credentials. Build or provide a hardened image containing `codex` and/or `claude`. The worker passes only the repository workspace and task prompt into that container.
+The worker expects an `AGENT_IMAGE` containing the selected CLI and its user-provided credentials. Use a versioned tag or a full SHA-256 digest, for example `open-source-maintenance-agent:0.1.0`; `latest` is rejected. Build or provide a hardened image containing `codex` and/or `claude`. The worker passes only the repository workspace and task prompt into that container.
+
+## Verification
+
+Run the complete local check before opening a pull request:
+
+```bash
+npm run check
+```
